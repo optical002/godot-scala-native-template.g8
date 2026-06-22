@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bj88341lyxenb"]
+
+[node name="Node" type="Node" unique_id=412112042]
+
+[node name="HelloWorld" type="HelloWorld" parent="." unique_id=1377661036]
+speed = 10.0
