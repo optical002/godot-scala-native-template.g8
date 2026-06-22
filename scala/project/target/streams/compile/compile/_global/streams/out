@@ -1,7 +1,0 @@
-[warn] /home/optick/work/godot-scala-native-template/scala/project/RegistrationScan.scala:209:45: method paramss in trait Primary is deprecated: 4.6.0
-[warn]             allParamsConstructible = c.ctor.paramss.forall(_.forall { p =>
-[warn]                                             ^
-[warn] /home/optick/work/godot-scala-native-template/scala/project/RegistrationScan.scala:222:15: method unapply in object Apply is deprecated: 4.6.0; use `.After_4_6_0`
-[warn]     case Type.Apply(tpe, _)      => typeName(tpe)
-[warn]               ^
-[warn] two warnings found
