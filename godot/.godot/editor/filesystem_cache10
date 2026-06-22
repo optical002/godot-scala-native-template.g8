@@ -1,0 +1,16 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1782079255
+export_comp_verify.gd::GDScript::3652680005923507914::1782057037::0::1::::<>SceneTree<><>0<>0<><>::
+export_hints_verify.gd::GDScript::5142777848420810161::1781993011::0::1::::<>SceneTree<><>0<>0<><>::
+export_verify.gd::GDScript::2088175892307456866::1781991911::0::1::::<>SceneTree<><>0<>0<><>::
+godot_scala.gdextension::GDExtension::4496778173361886968::1781695371::0::1::::<><><>0<>0<><>::
+harness_manifest.json::JSON::-1::1782069150::0::1::::<><><>0<>0<><>::
+icon.svg::CompressedTexture2D::5315792862006088745::1770384348::1782079170::1::::<><><>0<>0<>5e7d0aea1d4d846b2d004db22fb46ba0<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+new_player_stats.tres::PlayerStats::4299396282457642033::1781726920::0::1::::<><><>0<>0<><>::
+new_resource.tres::Resource::5017273178279715481::1781728452::0::1::::<><><>0<>0<><>::
+node_3d.tscn::PackedScene::4179315416105455214::1781733676::0::1::::<><><>0<>0<><>::
+node_harness.tscn::PackedScene::-1::1782069150::0::1::::<><><>0<>0<><>::
+node_harness_verify.gd::GDScript::631283946466849171::1781709515::0::1::::<>SceneTree<><>0<>0<><>::
+test.tscn::PackedScene::6809157079482784547::1781993330::0::1::::<><><>0<>0<><>::uid://b2iwotqttl8jt::::res://new_player_stats.tres<>uid://b0sqyjy0v2r0q::::res://node_3d.tscn
+verify.gd::GDScript::4834576515648727150::1781691938::0::1::::<>SceneTree<><>0<>0<><>::
+::res://lib/::1782079228
