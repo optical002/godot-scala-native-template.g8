@@ -1,8 +1,7 @@
 package game
 
-import gdext.GodotPrint
-import gdext.codegen.engine.Node2D
-import gdext.register.*
+import gdext.api.GodotPrint
+import gdext.classes.Node2D
 
 case class HelloWorld(
   var speed: Double

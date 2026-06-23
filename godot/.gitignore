@@ -1,4 +1,5 @@
 .godot/
+.scala/
 lib/
 godot-init
 godot-init-prev
