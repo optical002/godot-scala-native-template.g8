@@ -1,1 +1,0 @@
-addSbtPlugin("io.github.optical002" % "sbt-godot-scala-native" % "0.1.0-SNAPSHOT")

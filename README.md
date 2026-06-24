@@ -1,0 +1,59 @@
+# godot-scala-native-template
+
+A [Giter8](http://www.foundweekends.org/giter8/) template for starting a
+[Godot](https://godotengine.org/) 4 project whose game logic is written in
+**Scala**, compiled to a native GDExtension with
+[Scala Native](https://scala-native.org/) via the
+[`sbt-godot-scala-native`](https://github.com/optical002/godot-scala-native)
+plugin.
+
+## Create a project
+
+```sh
+sbt new optical002/godot-scala-native-template.g8
+```
+
+(If the GitHub repo is not named with the `.g8` suffix, use the full URL form:
+`sbt new https://github.com/optical002/godot-scala-native-template.git`.)
+
+You'll be prompted for:
+
+| Property | Meaning                                   | Default              |
+|----------|-------------------------------------------|----------------------|
+| `name`   | Project name (Godot `config/name`, output folder) | `My Godot Scala Game` |
+
+## Prerequisites
+
+- **JDK 17+** and **sbt**.
+- A **Clang/LLVM** toolchain (Scala Native compiles through it).
+- **Godot 4.6**.
+
+See the [binding's BUILD docs](https://github.com/optical002/godot-scala-native)
+for the per-OS toolchain.
+
+## Generated layout
+
+```
+<name>/
+  godot/        the Godot project (open this in the editor)
+  scala/        the sbt build for the Scala game library
+    src/main/scala/game/   your game classes (package `game`)
+```
+
+## Build & run
+
+```sh
+cd scala
+sbt godotBuild        # compiles, native-links, swaps the .so into godot/.scala/
+```
+
+Then open `godot/` in Godot 4.6. Add a class under `scala/src/main/scala/game/`
+that extends a Godot engine class and it is auto-registered on the next
+`godotBuild` — no entry-point edits, no manual registration list. The provided
+`HelloWorld` (a `Node2D`) prints on `_ready` and is wired into `entry.tscn`.
+
+## What this template pins
+
+The generated `scala/project/plugins.sbt` depends on the published plugin (and,
+transitively, the matching `scala-native-gdextension` binding) from Maven
+Central. Both move together under one version.

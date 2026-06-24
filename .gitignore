@@ -1,1 +1,8 @@
+# Build outputs of THIS giter8 template repo (not the generated project — that
+# has its own .gitignore under src/main/g8/).
+target/
+project/target/
+project/project/
+.bloop/
+.bsp/
 .metals/
