@@ -13,14 +13,12 @@ plugin.
 sbt new optical002/godot-scala-native-template.g8
 ```
 
-(If the GitHub repo is not named with the `.g8` suffix, use the full URL form:
-`sbt new https://github.com/optical002/godot-scala-native-template.git`.)
-
 You'll be prompted for:
 
-| Property | Meaning                                   | Default              |
-|----------|-------------------------------------------|----------------------|
-| `name`   | Project name (Godot `config/name`, output folder) | `My Godot Scala Game` |
+| Property      | Meaning                                            | Default               |
+|---------------|----------------------------------------------------|-----------------------|
+| `name`        | Project name (Godot `config/name`, output folder)  | `My Godot Scala Game` |
+| `description` | Short project description                          | (see prompt)          |
 
 ## Prerequisites
 
@@ -54,6 +52,9 @@ that extends a Godot engine class and it is auto-registered on the next
 
 ## What this template pins
 
-The generated `scala/project/plugins.sbt` depends on the published plugin (and,
-transitively, the matching `scala-native-gdextension` binding) from Maven
-Central. Both move together under one version.
+The generated `scala/project/plugins.sbt` adds the
+[JitPack](https://jitpack.io/#optical002/godot-scala-native) resolver and the
+published `sbt-godot-scala-native` plugin
+(`com.github.optical002.godot-scala-native`). The plugin injects the matching
+`scala-native-gdextension` binding (same group and version, same resolver) into
+the project — both move together under one released tag.
