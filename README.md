@@ -45,7 +45,10 @@ cd scala
 sbt godotBuild        # compiles, native-links, swaps the .so into godot/.scala/
 ```
 
-Then open `godot/` in Godot 4.6. Add a class under `scala/src/main/scala/game/`
+Then open `godot/` in Godot 4.6 — the first open runs the initial import that
+registers the GDExtension and resolves scene UIDs (for a headless workflow run
+`godot --headless --path godot --import` once instead). Add a class under
+`scala/src/main/scala/game/`
 that extends a Godot engine class and it is auto-registered on the next
 `godotBuild` — no entry-point edits, no manual registration list. The provided
 `HelloWorld` (a `Node2D`) prints on `_ready` and is wired into `entry.tscn`.
