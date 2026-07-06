@@ -1,10 +1,12 @@
 package game
 
-import gdext.api.GodotPrint
+import gdext.api.{Gd, Tscn}
 import gdext.classes.Node2D
+import gdext.builtin.Vector2
 
 case class HelloWorld(
-  var speed: Double
+  var speed: Double,
+  var velocity: Tscn[Node2D],
 ) extends Node2D:
-  override def _ready(): Unit = 
-    GodotPrint.print(s"Hello from scala! (speed=$speed)")
+  override def _ready(): Unit =
+    Gd.print(s"Hello from scala! (speed=$speed)")
