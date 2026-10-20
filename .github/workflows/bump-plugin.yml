@@ -1,0 +1,64 @@
+# Keeps the scaffold's sbt-godot-scala-native pin on the newest release that
+# JitPack has built, so `sbt new` always generates a project on the latest
+# version while each generated project stays pinned (reproducible).
+name: bump-plugin
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bump-plugin
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find latest JitPack release
+        id: latest
+        run: |
+          base=https://jitpack.io/com/github/optical002/godot-scala-native/sbt-godot-scala-native_2.12_1.0
+          # Highest plain-semver version JitPack lists; skips commit-hash builds.
+          version=$(curl -sfL --retry 3 "$base/maven-metadata.xml" \
+            | grep -oE '<version>[0-9]+\.[0-9]+\.[0-9]+</version>' \
+            | sed -E 's:</?version>::g' \
+            | sort -V | tail -n1)
+          if [ -z "$version" ]; then
+            echo "::error::no release found in JitPack metadata"
+            exit 1
+          fi
+          # Only take a version whose plugin POM is actually served.
+          curl -sfL --retry 3 -o /dev/null \
+            "$base/$version/sbt-godot-scala-native_2.12_1.0-$version.pom"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Update plugins.sbt
+        id: bump
+        env:
+          VERSION: ${{ steps.latest.outputs.version }}
+        run: |
+          file=src/main/g8/scala/project/plugins.sbt
+          sed -i -E "s/(\"sbt-godot-scala-native\" % \")[^\"]+\"/\1${VERSION}\"/" "$file"
+          grep -q "\"sbt-godot-scala-native\" % \"${VERSION}\"" "$file"
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit
+        if: steps.bump.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.latest.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Bump sbt-godot-scala-native to ${VERSION}"
+          git push

@@ -61,3 +61,11 @@ published `sbt-godot-scala-native` plugin
 (`com.github.optical002.godot-scala-native`). The plugin injects the matching
 `scala-native-gdextension` binding (same group and version, same resolver) into
 the project — both move together under one released tag.
+
+The pinned version tracks JitPack automatically: the hourly
+[`bump-plugin`](.github/workflows/bump-plugin.yml) workflow reads JitPack's
+`maven-metadata.xml`, and when a newer release exists it rewrites the version
+in `src/main/g8/scala/project/plugins.sbt` and commits. New projects therefore
+always start on the latest release, while each generated project stays pinned
+to the version it was created with. Run the workflow by hand from the Actions
+tab to pick up a release immediately.
