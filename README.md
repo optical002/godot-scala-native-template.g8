@@ -67,5 +67,8 @@ The pinned version tracks JitPack automatically: the hourly
 `maven-metadata.xml`, and when a newer release exists it rewrites the version
 in `src/main/g8/scala/project/plugins.sbt` and commits. New projects therefore
 always start on the latest release, while each generated project stays pinned
-to the version it was created with. Run the workflow by hand from the Actions
-tab to pick up a release immediately.
+to the version it was created with. The same run extracts the editor addon
+(`godot-addon/`) from that release's plugin jar and, when its `plugin.cfg`
+version is newer, replaces `src/main/g8/godot/addons/godot_scala/` with it, so
+new projects also start on the latest addon. Run the workflow by hand from the
+Actions tab to pick up a release immediately.

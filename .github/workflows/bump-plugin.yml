@@ -1,6 +1,8 @@
 # Keeps the scaffold's sbt-godot-scala-native pin on the newest release that
 # JitPack has built, so `sbt new` always generates a project on the latest
-# version while each generated project stays pinned (reproducible).
+# version while each generated project stays pinned (reproducible). Also syncs
+# the scaffold's editor addon from that release's jar when the jar's addon
+# version is newer.
 name: bump-plugin
 
 on:
@@ -53,12 +55,46 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit
-        if: steps.bump.outputs.changed == 'true'
+      - name: Update editor addon
+        id: addon
         env:
           VERSION: ${{ steps.latest.outputs.version }}
         run: |
+          base=https://jitpack.io/com/github/optical002/godot-scala-native/sbt-godot-scala-native_2.12_1.0
+          tmp=$(mktemp -d)
+          curl -sfL --retry 3 -o "$tmp/plugin.jar" \
+            "$base/$VERSION/sbt-godot-scala-native_2.12_1.0-$VERSION.jar"
+          unzip -q "$tmp/plugin.jar" 'godot-addon/*' -d "$tmp"
+
+          src=$tmp/godot-addon
+          dst=src/main/g8/godot/addons/godot_scala
+          ver() { sed -nE 's/^[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]*)".*/\1/p' "$1" 2>/dev/null; }
+          new=$(ver "$src/plugin.cfg")
+          old=$(ver "$dst/plugin.cfg")
+          echo "addon: template ${old:-none}, jar ${new:-none}"
+
+          # Only replace when the jar's addon is strictly newer.
+          if [ -n "$new" ] && [ "$new" != "$old" ] && \
+             [ "$(printf '%s\n%s\n' "$old" "$new" | sort -V | tail -n1)" = "$new" ]; then
+            mkdir -p "$dst"
+            cp "$src/plugin.cfg" "$src/icon.svg" "$src/godot.svg" "$dst/"
+            sed 's|@SBT_PROJECT_DIR@|../scala|' "$src/scala_build.gd" > "$dst/scala_build.gd"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "version=$new" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit
+        if: steps.bump.outputs.changed == 'true' || steps.addon.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.latest.outputs.version }}
+          ADDON: ${{ steps.addon.outputs.version }}
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -am "Bump sbt-godot-scala-native to ${VERSION}"
+          git add -A src/main/g8
+          msg="Bump sbt-godot-scala-native to ${VERSION}"
+          if [ -n "$ADDON" ]; then msg="$msg (editor addon ${ADDON})"; fi
+          git commit -m "$msg"
           git push
