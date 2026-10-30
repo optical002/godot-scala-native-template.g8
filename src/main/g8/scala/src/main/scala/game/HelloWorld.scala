@@ -8,5 +8,5 @@ final class HelloWorld(
   var speed: Double,
   var velocity: Tscn[Node2D],
 ) extends Node2D:
-  override def _ready(): Unit =
+  override def ready(): Unit =
     Gd.print(s"Hello from scala! (speed=$speed)")
